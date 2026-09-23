@@ -141,7 +141,7 @@
 
     .btn-group {
       position: relative;
-      height: 100px;
+      height: 180px;
       margin-top: 20px;
     }
 
@@ -1222,13 +1222,28 @@
       const noBtn =
         document.getElementById('noBtn');
 
+      const container =
+        document.querySelector('.btn-group');
+
+
+      const maxX =
+        container.clientWidth -
+        noBtn.offsetWidth;
+
+
+      const maxY =
+        container.clientHeight -
+        noBtn.offsetHeight;
+
 
       const randomX =
-        (Math.random() - 0.5) * 500;
+        Math.random() * maxX -
+        noBtn.offsetLeft;
 
 
       const randomY =
-        (Math.random() - 0.5) * 500;
+        Math.random() * maxY -
+        noBtn.offsetTop;
 
 
       noBtn.style.transform =
