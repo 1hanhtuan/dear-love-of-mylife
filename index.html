@@ -717,12 +717,8 @@
 
         <div class="other-vibe-input" id="otherVibeInput">
 
-          <input
-            type="text"
-            id="otherVibeText"
-            placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
-            oninput="updateOtherVibe()"
-          >
+          <input type="text" id="otherVibeText" placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
+            oninput="updateOtherVibe()">
 
         </div>
 
@@ -788,13 +784,8 @@
             Hoặc tải ảnh outfit của em lên đây
           </div>
 
-          <input
-            type="file"
-            id="dressImageInput"
-            accept="image/*"
-            style="display: none;"
-            onchange="handleDressUpload(event)"
-          >
+          <input type="file" id="dressImageInput" accept="image/*" style="display: none;"
+            onchange="handleDressUpload(event)">
 
         </div>
 
@@ -825,9 +816,7 @@
 
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdz4QgbL7S37EcI8iU2W2NF_eocO86cohoml1oN8KGb0YnwoxMBmK2x4g&s=10"
-              alt="Cat McDonald"
-              class="trend-img"
-            >
+              alt="Cat McDonald" class="trend-img">
 
             <div class="trend-label">
               Cat McDonald 🍟
@@ -837,11 +826,8 @@
 
           <div class="trend-card" id="trend2Card" onclick="selectTrend('Heart Nail 💅')">
 
-            <img
-              src="https://i.postimg.cc/sx7Kz4mk/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg"
-              alt="Heart Nail"
-              class="trend-img"
-            >
+            <img src="https://i.postimg.cc/sx7Kz4mk/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg" alt="Heart Nail"
+              class="trend-img">
 
             <div class="trend-label">
               Heart Nail 💅
@@ -865,14 +851,8 @@
             em có thể upload nhiều hình!
           </div>
 
-          <input
-            type="file"
-            id="customImageInput"
-            accept="image/*"
-            multiple
-            style="display: none;"
-            onchange="handleMultipleImagesUpload(event)"
-          >
+          <input type="file" id="customImageInput" accept="image/*" multiple style="display: none;"
+            onchange="handleMultipleImagesUpload(event)">
 
         </div>
 
@@ -951,12 +931,7 @@
           Thanks for spending time with me 🥰❤️
         </p>
 
-        <button
-          type="submit"
-          class="btn"
-          style="background-color: #2e7d32;"
-          id="submitBtn"
-        >
+        <button type="submit" class="btn" style="background-color: #2e7d32;" id="submitBtn">
           Gửi lịch hẹn cho anh nhé! 💌
         </button>
 
@@ -1222,32 +1197,103 @@
       const noBtn =
         document.getElementById('noBtn');
 
+      const yesBtn =
+        document.getElementById('yesBtn');
+
       const container =
         document.querySelector('.btn-group');
 
 
-      const maxX =
-        container.clientWidth -
+      /* =========================
+         EMOTIONS
+      ========================= */
+
+      yesBtn.innerText =
+        'Yes 😭';
+
+      noBtn.innerText =
+        'No 🥺';
+
+
+      const containerWidth =
+        container.clientWidth;
+
+      const containerHeight =
+        container.clientHeight;
+
+
+      const noWidth =
         noBtn.offsetWidth;
 
-
-      const maxY =
-        container.clientHeight -
+      const noHeight =
         noBtn.offsetHeight;
 
 
-      const randomX =
-        Math.random() * maxX -
-        noBtn.offsetLeft;
+      const yesLeft =
+        yesBtn.offsetLeft;
+
+      const yesTop =
+        yesBtn.offsetTop;
+
+      const yesRight =
+        yesLeft + yesBtn.offsetWidth;
+
+      const yesBottom =
+        yesTop + yesBtn.offsetHeight;
 
 
-      const randomY =
-        Math.random() * maxY -
-        noBtn.offsetTop;
+      let randomX;
+      let randomY;
+
+      let isOverlapping = true;
+
+      let attempts = 0;
+
+
+      while (
+        isOverlapping &&
+        attempts < 100
+      ) {
+
+        randomX =
+          Math.random() *
+          (containerWidth - noWidth);
+
+        randomY =
+          Math.random() *
+          (containerHeight - noHeight);
+
+
+        const noLeft =
+          randomX;
+
+        const noTop =
+          randomY;
+
+        const noRight =
+          noLeft + noWidth;
+
+        const noBottom =
+          noTop + noHeight;
+
+
+        isOverlapping =
+          noLeft < yesRight &&
+          noRight > yesLeft &&
+          noTop < yesBottom &&
+          noBottom > yesTop;
+
+
+        attempts++;
+
+      }
 
 
       noBtn.style.transform =
-        `translate(${randomX}px, ${randomY}px)`;
+        `translate(
+          ${randomX - noBtn.offsetLeft}px,
+          ${randomY - noBtn.offsetTop}px
+        )`;
 
 
       noBtn.style.transition =
