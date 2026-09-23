@@ -1,1846 +1,1874 @@
 <!DOCTYPE html>
+
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Will You Go On A Date With Me? 💖</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Quicksand", sans-serif;
-      }
-
-      body {
-        background-color: #fce4ec;
-        background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow-x: hidden;
-      }
-
-      .card {
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        width: 100%;
-        max-width: 450px;
-        text-align: center;
-        position: relative;
-        animation: fadeIn 0.5s ease-in-out;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      h2 {
-        color: #d81b60;
-        margin-bottom: 10px;
-        font-size: 24px;
-      }
-
-      p {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 5px;
-      }
-
-      .step {
-        display: none;
-      }
-
-      .step.active {
-        display: block;
-      }
-
-      /* =========================
-       TOP BACK ICON
-    ========================= */
-
-      .top-back-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-
-        width: 20px;
-        height: 20px;
-
-        display: none;
-        align-items: center;
-        justify-content: center;
-
-        background: #fce4ec;
-        color: #d81b60;
-
-        border: none;
-        border-radius: 50%;
-
-        font-size: 20px;
-        font-weight: 700;
-
-        cursor: pointer;
-
-        transition: all 0.2s ease;
-
-        z-index: 10;
-      }
-
-      .top-back-btn:hover {
-        background: #e91e63;
-        color: white;
-        transform: translateX(-2px);
-      }
-
-      /* =========================
-       BUTTONS
-    ========================= */
-
-      .btn {
-        background-color: #e91e63;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-        margin-top: 15px;
-        width: 100%;
-      }
-
-      .btn:hover {
-        background-color: #c2185b;
-        transform: translateY(-2px);
-      }
-
-      .btn:disabled {
-        background-color: #f8bbd0 !important;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none !important;
-      }
-
-      /* =========================
-       STEP 1: YES / NO
-    ========================= */
-
-      .btn-group {
-        position: relative;
-        height: 80px;
-        margin-top: 20px;
-        transition: height 0.35s ease;
-      }
-
-      .btn-group.expanded {
-        height: 300px;
-      }
-
-      #yesBtn {
-        position: absolute;
-        left: 20px;
-        top: 10px;
-        width: 120px;
-      }
-
-      #noBtn {
-        position: absolute;
-        left: auto;
-        right: 20px;
-        top: 10px;
-        width: 120px;
-        background-color: #b0bec5;
-        box-shadow: none;
-      }
-
-      #noBtn:hover {
-        background-color: #90a4ae;
-      }
-
-      /* =========================
-       STEP 2: CALENDAR
-    ========================= */
-
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-      }
-
-      .calendar-header button {
-        background: #fce4ec;
-        border: none;
-        color: #d81b60;
-        font-weight: 700;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.2s;
-      }
-
-      .calendar-header button:hover {
-        background: #e91e63;
-        color: white;
-      }
-
-      #currentMonthYear {
-        font-weight: 700;
-        color: #d81b60;
-        font-size: 16px;
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 5px;
-        margin-bottom: 20px;
-      }
-
-      .day-name {
-        font-size: 12px;
-        font-weight: 700;
-        color: #888;
-      }
-
-      .day {
-        padding: 8px 0;
-        font-size: 14px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.2s;
-      }
-
-      .day:hover {
-        background-color: #f8bbd0;
-      }
-
-      .day.selected {
-        background-color: #e91e63;
-        color: white;
-        font-weight: 700;
-      }
-
-      .day.disabled {
-        color: #ccc;
-        cursor: not-allowed;
-        background: transparent !important;
-      }
-
-      .day.empty {
-        cursor: default;
-      }
-
-      /* =========================
-       TIME PICKER
-    ========================= */
-
-      .time-picker-section {
-        margin-bottom: 20px;
-      }
-
-      .time-picker-label {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #d81b60;
-        text-align: left;
-      }
-
-      .time-picker-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        padding: 14px;
-
-        border: 2px solid #f8bbd0;
-        border-radius: 14px;
-
-        background: #fff;
-
-        transition: 0.2s;
-      }
-
-      .time-picker-card:focus-within {
-        border-color: #e91e63;
-        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
-      }
-
-      .time-picker-icon {
-        width: 42px;
-        height: 42px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background: #fce4ec;
-        border-radius: 50%;
-
-        font-size: 22px;
-
-        flex-shrink: 0;
-      }
-
-      .time-picker-content {
-        flex: 1;
-        text-align: left;
-      }
-
-      .time-picker-title {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 4px;
-      }
-
-      #timePicker {
-        width: 100%;
-
-        border: none;
-        outline: none;
-
-        background: transparent;
-
-        color: #d81b60;
-
-        font-family: "Quicksand", sans-serif;
-
-        font-size: 22px;
-        font-weight: 700;
-
-        cursor: pointer;
-      }
-
-      .selected-time-preview {
-        margin-top: 8px;
-
-        font-size: 13px;
-        font-weight: 600;
-
-        color: #d81b60;
-
-        text-align: right;
-      }
-
-      /* =========================
-       STEP 3
-    ========================= */
-
-      .vibe-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-        max-height: 450px;
-        overflow-y: auto;
-        padding-right: 5px;
-      }
-
-      .vibe-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        padding: 10px 5px;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: center;
-        background: #fff;
-      }
-
-      .vibe-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
-
-      .vibe-card.selected {
-        border-color: #e91e63;
-        background-color: #fce4ec;
-      }
-
-      .vibe-icon {
-        font-size: 24px;
-        margin-bottom: 3px;
-      }
-
-      .vibe-name {
-        font-size: 12px;
-        font-weight: 600;
-        color: #444;
-      }
-
-      /* =========================
-       OTHER VIBE INPUT
-    ========================= */
-
-      .other-vibe-input {
-        display: none;
-        margin-bottom: 15px;
-      }
-
-      .other-vibe-input.active {
-        display: block;
-      }
-
-      .other-vibe-input input {
-        width: 100%;
-        padding: 12px 14px;
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        outline: none;
-        font-size: 14px;
-        color: #444;
-        transition: 0.2s;
-        background: #fff;
-      }
-
-      .other-vibe-input input:focus {
-        border-color: #e91e63;
-        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
-      }
-
-      .other-vibe-input input::placeholder {
-        color: #aaa;
-      }
-
-      /* =========================
-       DRESS CODE
-    ========================= */
-
-      .dress-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-      }
-
-      .dress-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        padding: 12px 8px;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: center;
-        background: #fff;
-      }
-
-      .dress-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
-
-      .dress-card.selected {
-        border-color: #e91e63;
-        background-color: #fce4ec;
-        box-shadow: 0 0 8px rgba(233, 30, 99, 0.3);
-      }
-
-      .dress-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: #444;
-      }
-
-      /* =========================
-       TREND
-    ========================= */
-
-      .trend-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-bottom: 15px;
-      }
-
-      .trend-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: 0.2s;
-        background: #fff;
-        position: relative;
-      }
-
-      .trend-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
-
-      .trend-card.selected {
-        border-color: #e91e63;
-        box-shadow: 0 0 10px rgba(233, 30, 99, 0.4);
-        background-color: #fce4ec;
-      }
-
-      .trend-img {
-        width: 100%;
-        height: 110px;
-        object-fit: cover;
-      }
-
-      .trend-label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #444;
-        padding: 6px;
-      }
-
-      .upload-section {
-        border: 2px dashed #f8bbd0;
-        padding: 12px;
-        border-radius: 12px;
-        background: #fff0f5;
-        cursor: pointer;
-        text-align: center;
-        margin-top: 8px;
-        transition: 0.2s;
-      }
-
-      .upload-section:hover {
-        border-color: #e91e63;
-      }
-
-      /* =========================
-       COUNTDOWN
-    ========================= */
-
-      .countdown-box {
-        font-weight: 600;
-        color: #d81b60;
-        font-size: 15px;
-        margin-top: 15px;
-        background: #fff0f5;
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px dashed #e91e63;
-      }
-    </style>
+```
+<link
+  href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Quicksand", sans-serif;
+  }
+
+  body {
+    background-color: #fce4ec;
+    background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    color: #d81b60;
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+
+  p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .step {
+    display: none;
+  }
+
+  .step.active {
+    display: block;
+  }
+
+  /* =========================
+   TOP BACK ICON
+========================= */
+
+  .top-back-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    width: 20px;
+    height: 20px;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    background: #fce4ec;
+    color: #d81b60;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    z-index: 10;
+  }
+
+  .top-back-btn:hover {
+    background: #e91e63;
+    color: white;
+    transform: translateX(-2px);
+  }
+
+  /* =========================
+   BUTTONS
+========================= */
+
+  .btn {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .btn:hover {
+    background-color: #c2185b;
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    background-color: #f8bbd0 !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  /* =========================
+   STEP 1: YES / NO
+========================= */
+
+  .btn-group {
+    position: relative;
+    height: 80px;
+    margin-top: 20px;
+    transition: height 0.35s ease;
+  }
+
+  .btn-group.expanded {
+    height: 300px;
+  }
+
+  #yesBtn {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    width: 120px;
+  }
+
+  #noBtn {
+    position: absolute;
+    left: auto;
+    right: 20px;
+    top: 10px;
+    width: 120px;
+    background-color: #b0bec5;
+    box-shadow: none;
+  }
+
+  #noBtn:hover {
+    background-color: #90a4ae;
+  }
+
+  /* =========================
+   STEP 2: CALENDAR
+========================= */
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .calendar-header button {
+    background: #fce4ec;
+    border: none;
+    color: #d81b60;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .calendar-header button:hover {
+    background: #e91e63;
+    color: white;
+  }
+
+  #currentMonthYear {
+    font-weight: 700;
+    color: #d81b60;
+    font-size: 16px;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+
+  .day-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+  }
+
+  .day {
+    padding: 8px 0;
+    font-size: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .day:hover {
+    background-color: #f8bbd0;
+  }
+
+  .day.selected {
+    background-color: #e91e63;
+    color: white;
+    font-weight: 700;
+  }
+
+  .day.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    background: transparent !important;
+  }
+
+  .day.empty {
+    cursor: default;
+  }
+
+  /* =========================
+   TIME PICKER
+========================= */
+
+  .time-picker-section {
+    margin-bottom: 20px;
+  }
+
+  .time-picker-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #d81b60;
+    text-align: left;
+  }
+
+  .time-picker-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px;
+
+    border: 2px solid #f8bbd0;
+    border-radius: 14px;
+
+    background: #fff;
+
+    transition: 0.2s;
+  }
+
+  .time-picker-card:focus-within {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+  }
+
+  .time-picker-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fce4ec;
+    border-radius: 50%;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+  }
+
+  .time-picker-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  .time-picker-title {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  #timePicker {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #d81b60;
+
+    font-family: "Quicksand", sans-serif;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .selected-time-preview {
+    margin-top: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #d81b60;
+
+    text-align: right;
+  }
+
+  /* =========================
+   STEP 3
+========================= */
+
+  .vibe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+
+  .vibe-card {
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    padding: 10px 5px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+    background: #fff;
+  }
+
+  .vibe-card:hover {
+    border-color: #e91e63;
+    transform: translateY(-2px);
+  }
+
+  .vibe-card.selected {
+    border-color: #e91e63;
+    background-color: #fce4ec;
+  }
+
+  .vibe-icon {
+    font-size: 24px;
+    margin-bottom: 3px;
+  }
+
+  .vibe-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+  }
+
+  /* =========================
+   OTHER VIBE INPUT
+========================= */
+
+  .other-vibe-input {
+    display: none;
+    margin-bottom: 15px;
+  }
+
+  .other-vibe-input.active {
+    display: block;
+  }
+
+  .other-vibe-input input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    outline: none;
+    font-size: 14px;
+    color: #444;
+    transition: 0.2s;
+    background: #fff;
+  }
+
+  .other-vibe-input input:focus {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+  }
+
+  .other-vibe-input input::placeholder {
+    color: #aaa;
+  }
+
+  /* =========================
+   DRESS CODE
+========================= */
+
+  .dress-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .dress-card {
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    padding: 12px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+    background: #fff;
+  }
+
+  .dress-card:hover {
+    border-color: #e91e63;
+    transform: translateY(-2px);
+  }
+
+  .dress-card.selected {
+    border-color: #e91e63;
+    background-color: #fce4ec;
+    box-shadow: 0 0 8px rgba(233, 30, 99, 0.3);
+  }
+
+  .dress-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+  }
+
+  /* =========================
+   TREND
+========================= */
+
+  .trend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .trend-card {
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #fff;
+    position: relative;
+  }
+
+  .trend-card:hover {
+    border-color: #e91e63;
+    transform: translateY(-2px);
+  }
+
+  .trend-card.selected {
+    border-color: #e91e63;
+    box-shadow: 0 0 10px rgba(233, 30, 99, 0.4);
+    background-color: #fce4ec;
+  }
+
+  .trend-img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+  }
+
+  .trend-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+    padding: 6px;
+  }
+
+  .upload-section {
+    border: 2px dashed #f8bbd0;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff0f5;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 8px;
+    transition: 0.2s;
+  }
+
+  .upload-section:hover {
+    border-color: #e91e63;
+  }
+
+  /* =========================
+   COUNTDOWN
+========================= */
+
+  .countdown-box {
+    font-weight: 600;
+    color: #d81b60;
+    font-size: 15px;
+    margin-top: 15px;
+    background: #fff0f5;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px dashed #e91e63;
+  }
+</style>
+```
+
   </head>
 
   <body>
     <div class="card">
       <!-- TOP RIGHT BACK ICON -->
 
-      <button
-        type="button"
-        class="top-back-btn"
-        id="topBackBtn"
-        onclick="goBack()"
-        aria-label="Go back"
-      >
-        ←
-      </button>
-
-      <form
-        id="dateForm"
-        onsubmit="submitForm(event)"
-        action="https://formspree.io/f/myezjykp"
-        method="POST"
-      >
-        <!-- =========================
-           HIDDEN INPUTS
-      ========================= -->
-
-        <input type="hidden" name="selected_date" id="inputDate" value="" />
-
-        <input
-          type="hidden"
-          name="selected_time"
-          id="inputTime"
-          value="6:00 PM"
-        />
-
-        <input type="hidden" name="selected_vibe" id="inputVibe" value="" />
-
-        <input type="hidden" name="selected_dress" id="inputDress" value="" />
-
-        <input type="hidden" name="selected_trend" id="inputTrend" value="" />
-
-        <!-- =========================
-           STEP 1
-      ========================= -->
-
-        <div class="step active" id="step1">
-          <div style="font-size: 40px; margin-bottom: 15px">🌸💌</div>
-
-          <h2>WILL YOU GO ON A DATE WITH ME?</h2>
-
-          <p>Chỉ được chọn Yes thôi nha công chúa ✨</p>
-
-          <div class="btn-group">
-            <button type="button" class="btn" id="yesBtn" onclick="nextStep(2)">
-              Yes
-            </button>
-
-            <button
-              type="button"
-              class="btn"
-              id="noBtn"
-              onmousemove="moveNoButton()"
-              ontouchstart="moveNoButton()"
-            >
-              No
-            </button>
-          </div>
-        </div>
-
-        <!-- =========================
-           STEP 2
-      ========================= -->
-
-        <div class="step" id="step2">
-          <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
-
-          <p>I knew you'd say yes! Pick a slot below 👇</p>
-
-          <!-- CALENDAR -->
-
-          <div class="calendar-header">
-            <button type="button" onclick="changeMonth(-1)">❮</button>
-
-            <div id="currentMonthYear">September 2026</div>
-
-            <button type="button" onclick="changeMonth(1)">❯</button>
-          </div>
-
-          <div class="calendar-grid">
-            <div class="day-name">Su</div>
-            <div class="day-name">Mo</div>
-            <div class="day-name">Tu</div>
-            <div class="day-name">We</div>
-            <div class="day-name">Th</div>
-            <div class="day-name">Fr</div>
-            <div class="day-name">Sa</div>
-          </div>
-
-          <div class="calendar-grid" id="calendarDaysContainer"></div>
-
-          <!-- TIME PICKER -->
-
-          <div class="time-picker-section">
-            <div class="time-picker-label">What time? ⏰</div>
-
-            <div class="time-picker-card">
-              <div class="time-picker-icon">🕐</div>
-
-              <div class="time-picker-content">
-                <div class="time-picker-title">Chọn giờ hẹn của chúng ta</div>
-
-                <input
-                  type="time"
-                  id="timePicker"
-                  value="18:00"
-                  onchange="selectTime(this.value)"
-                />
-              </div>
-            </div>
-
-            <div class="selected-time-preview" id="selectedTimePreview">
-              6:00 PM 💖
-            </div>
-          </div>
-
-          <button type="button" class="btn" id="btnStep2" onclick="nextStep(3)">
-            Set the date 💖
-          </button>
-        </div>
-
-        <!-- =========================
-           STEP 3
-      ========================= -->
-
-        <div class="step" id="step3">
-          <div style="font-size: 13px; color: #666; margin-bottom: 3px">
-            Yay! Our date has been successfully scheduled! ❤️
-          </div>
-
-          <h2>What are we feeling? (Chọn nhiều nha) ✨</h2>
-
-          <div class="vibe-grid">
-            <div class="vibe-card" onclick="toggleVibe(this, 'Matcha Latte 🍵')">
-              <div class="vibe-icon">🍵</div>
-
-              <div class="vibe-name">Matcha Latte</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Coffee / Milk Tea ☕')">
-              <div class="vibe-icon">☕ / 🥤</div>
-
-              <div class="vibe-name">Coffee / Milk Tea</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Mall 🛍️')">
-              <div class="vibe-icon">🛍️</div>
-
-              <div class="vibe-name">Mall</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Jollibee 🍗')">
-              <div class="vibe-icon">🍗</div>
-
-              <div class="vibe-name">Jollibee</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Hotpot 🍲')">
-              <div class="vibe-icon">🍲</div>
-
-              <div class="vibe-name">Hotpot</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Steak 🥩')">
-              <div class="vibe-icon">🥩</div>
-
-              <div class="vibe-name">Steak</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Thai Noodle 🍜')">
-              <div class="vibe-icon">🍜</div>
-
-              <div class="vibe-name">Thai Noodle</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Korea Food 🇰🇷')">
-              <div class="vibe-icon">🇰🇷</div>
-
-              <div class="vibe-name">Korea Food</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Pizza 🍕')">
-              <div class="vibe-icon">🍕</div>
-
-              <div class="vibe-name">Pizza</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Sushi 🍣')">
-              <div class="vibe-icon">🍣</div>
-
-              <div class="vibe-name">Sushi</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Burgers 🍔')">
-              <div class="vibe-icon">🍔</div>
-
-              <div class="vibe-name">Burgers</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Pasta 🍝')">
-              <div class="vibe-icon">🍝</div>
-
-              <div class="vibe-name">Pasta</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Tacos 🌮')">
-              <div class="vibe-icon">🌮</div>
-
-              <div class="vibe-name">Tacos</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Cinema 🎬')"
-            >
-              <div class="vibe-icon">🎬</div>
-
-              <div class="vibe-name">Cinema</div>
-            </div>
-
-            <div class="vibe-card" onclick="toggleVibe(this, 'Other 📝')">
-              <div class="vibe-icon">📝</div>
-
-              <div class="vibe-name">Other</div>
-            </div>
-          </div>
-
-          <!-- OTHER INPUT -->
-
-          <div class="other-vibe-input" id="otherVibeInput">
-            <input
-              type="text"
-              id="otherVibeText"
-              placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
-              oninput="updateOtherVibe()"
-            />
-          </div>
-
-          <button
-            type="button"
-            class="btn"
-            id="btnStep3"
-            disabled
-            onclick="nextStep(32)"
-          >
-            Next 💌
-          </button>
-        </div>
-
-        <!-- =========================
-           STEP 3.2
-      ========================= -->
-
-        <div class="step" id="step32">
-          <h2>Dress Code 👗✨</h2>
-
-          <p style="font-size: 13px; margin-bottom: 12px">
-            Hôm đó công chúa mặc gì thế nhỉ?
-          </p>
-
-          <div class="dress-grid">
-            <div
-              class="dress-card"
-              id="dress1"
-              onclick="selectDress(this, 'White & Pastel 🤍')"
-            >
-              <div class="dress-name">White & Pastel 🤍</div>
-            </div>
-
-            <div
-              class="dress-card"
-              id="dress2"
-              onclick="selectDress(this, 'All Black Chic 🖤')"
-            >
-              <div class="dress-name">All Black Chic 🖤</div>
-            </div>
-
-            <div
-              class="dress-card"
-              id="dress3"
-              onclick="selectDress(this, 'Sweet & Elegant 🌸')"
-            >
-              <div class="dress-name">Sweet & Elegant 🌸</div>
-            </div>
-
-            <div
-              class="dress-card"
-              id="dress4"
-              onclick="selectDress(this, 'Casual & Comfy 🧢')"
-            >
-              <div class="dress-name">Casual & Comfy 🧢</div>
-            </div>
-          </div>
-
-          <div
-            class="upload-section"
-            onclick="document.getElementById('dressImageInput').click()"
-          >
-            <div style="font-size: 18px; margin-bottom: 2px">📸</div>
-
-            <div
-              style="font-size: 12px; font-weight: 600; color: #d81b60"
-              id="dressUploadText"
-            >
-              Hoặc tải ảnh outfit của em lên đây
-            </div>
-
-            <input
-              type="file"
-              id="dressImageInput"
-              accept="image/*"
-              style="display: none"
-              onchange="handleDressUpload(event)"
-            />
-          </div>
-
-          <button
-            type="button"
-            class="btn"
-            id="btnStep32"
-            disabled
-            onclick="nextStep(35)"
-          >
-            Next 💌
-          </button>
-        </div>
-
-        <!-- =========================
-           STEP 3.5
-      ========================= -->
-
-        <div class="step" id="step35">
-          <h2>Pick a Trend! 🌟</h2>
-
-          <p style="font-size: 13px; margin-bottom: 12px">
-            Chọn một trong hai trend dưới đây em muốn làm cùng anh ✨
-          </p>
-
-          <div class="trend-grid">
-            <div
-              class="trend-card"
-              id="trend1Card"
-              onclick="selectTrend('McDonald Cat 🐱')"
-            >
-              <img
-                src="https://i.ibb.co/zWWSX1KX/images.jpg"
-                alt="Cat McDonald"
-                class="trend-img"
-              />
-
-              <div class="trend-label">Cat McDonald 🍟</div>
-            </div>
-
-            <div
-              class="trend-card"
-              id="trend2Card"
-              onclick="selectTrend('Heart Nail 💅')"
-            >
-              <img
-                src="https://i.ibb.co/214dJS4v/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg"
-                alt="Heart Nail"
-                class="trend-img"
-              />
-
-              <div class="trend-label">Heart Nail 💅</div>
-            </div>
-
-            <div
-              class="trend-card"
-              id="trend3Card"
-              onclick="selectTrend('Flower Bouquet 💐')"
-            >
-              <img
-                src="https://i.ibb.co/kVZM5RJM/image.png"
-                alt="Flower Bouquet"
-                class="trend-img"
-              />
-
-              <div class="trend-label">Flower Bouquet 💐</div>
-            </div>
-
-            <div
-              class="trend-card"
-              id="trend4Card"
-              onclick="selectTrend('Zootopia 🦊')"
-            >
-              <img
-                src="https://i.ibb.co/B5DMrMs0/image-2.png"
-                alt="Zootopia"
-                class="trend-img"
-              />
-
-              <div class="trend-label">Zootopia 🦊</div>
-            </div>
-          </div>
-
-          <div
-            class="upload-section"
-            onclick="document.getElementById('customImageInput').click()"
-          >
-            <div style="font-size: 18px; margin-bottom: 2px">📤</div>
-
-            <div
-              style="font-size: 12px; font-weight: 600; color: #d81b60"
-              id="uploadText"
-            >
-              Hoặc cho anh biết em thích trend nào khác nhé công chúa, em có thể
-              upload nhiều hình!
-            </div>
-
-            <input
-              type="file"
-              id="customImageInput"
-              accept="image/*"
-              multiple
-              style="display: none"
-              onchange="handleMultipleImagesUpload(event)"
-            />
-          </div>
-
-          <button
-            type="button"
-            class="btn"
-            id="btnStep35"
-            disabled
-            onclick="nextStep(4)"
-          >
-            Next 💌
-          </button>
-        </div>
-
-        <!-- =========================
-           STEP 4
-      ========================= -->
-
-        <div class="step" id="step4">
-          <h2>YAY!! 💖</h2>
-
-          <div
-            style="
-              background: #fff0f5;
-              padding: 10px 12px;
-              border-radius: 12px;
-              margin: 10px 0;
-              text-align: left;
-              font-size: 12px;
-              color: #444;
-              border: 1px dashed #e91e63;
-            "
-          >
-            <p style="margin-bottom: 4px">
-              🗓️ <b>Ngày:</b>
-              <span id="sumDate"> September 6 </span>
-            </p>
-
-            <p style="margin-bottom: 4px">
-              ⏰ <b>Giờ:</b>
-              <span id="sumTime"> 6:00 PM </span>
-            </p>
-
-            <p style="margin-bottom: 4px">
-              ✨ <b>Hoạt động & Ẩm thực:</b>
-              <span id="sumVibe"> Chưa chọn </span>
-            </p>
-
-            <p style="margin-bottom: 4px">
-              👗 <b>Dress Code:</b>
-              <span id="sumDress"> Chưa chọn </span>
-            </p>
-
-            <p style="margin-bottom: 0">
-              📸 <b>Trend:</b>
-              <span id="sumTrend"> Chưa chọn </span>
-            </p>
-          </div>
-
-          <p style="font-weight: 600; color: #d81b60; margin-top: 5px">
-            I can't wait to see you! 🥀✨
-          </p>
-
-          <p style="font-weight: 600; color: #d81b60">
-            Thanks for spending time with me 🥰❤️
-          </p>
-
-          <button
-            type="submit"
-            class="btn"
-            style="background-color: #2e7d32"
-            id="submitBtn"
-          >
-            Gửi lịch hẹn cho anh nhé! 💌
-          </button>
-        </div>
-
-        <!-- =========================
-           STEP 5
-      ========================= -->
-
-        <div class="step" id="step5">
-          <div style="font-size: 50px; margin-bottom: 10px">❤️‍🔥</div>
-
-          <h2>Our Date Countdown</h2>
-
-          <p>Buổi hẹn hò của chúng ta sẽ diễn ra sau:</p>
-
-          <div class="countdown-box" id="countdownTimer">
-            Đang tính thời gian...
-          </div>
-
-          <p style="font-size: 13px; color: #888; margin-top: 20px">
-            Lịch hẹn đã được gửi thành công cho anh rồi nhé công chúa! 🥰
-          </p>
-        </div>
-      </form>
+```
+  <button
+    type="button"
+    class="top-back-btn"
+    id="topBackBtn"
+    onclick="goBack()"
+    aria-label="Go back"
+  >
+    ←
+  </button>
+
+  <form
+    id="dateForm"
+    onsubmit="submitForm(event)"
+    action="https://formspree.io/f/myezjykp"
+    method="POST"
+  >
+    <!-- =========================
+       HIDDEN INPUTS
+  ========================= -->
+
+    <input type="hidden" name="selected_date" id="inputDate" value="" />
+
+    <input
+      type="hidden"
+      name="selected_time"
+      id="inputTime"
+      value="6:00 PM"
+    />
+
+    <input type="hidden" name="selected_vibe" id="inputVibe" value="" />
+
+    <input type="hidden" name="selected_dress" id="inputDress" value="" />
+
+    <input type="hidden" name="selected_trend" id="inputTrend" value="" />
+
+    <!-- =========================
+       STEP 1
+  ========================= -->
+
+    <div class="step active" id="step1">
+      <div style="font-size: 40px; margin-bottom: 15px">🌸💌</div>
+
+      <h2>WILL YOU GO ON A DATE WITH ME?</h2>
+
+      <p>Chỉ được chọn Yes thôi nha công chúa ✨</p>
+
+      <div class="btn-group">
+        <button type="button" class="btn" id="yesBtn" onclick="nextStep(2)">
+          Yes
+        </button>
+
+        <button
+          type="button"
+          class="btn"
+          id="noBtn"
+          onmousemove="moveNoButton()"
+          ontouchstart="moveNoButton()"
+        >
+          No
+        </button>
+      </div>
     </div>
 
-    <script>
-      /* =========================
-       GLOBAL STATE
-    ========================= */
+    <!-- =========================
+       STEP 2
+  ========================= -->
 
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
+    <div class="step" id="step2">
+      <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
 
-      let today = new Date();
+      <p>I knew you'd say yes! Pick a slot below 👇</p>
 
-      let currentYear = today.getFullYear();
+      <div class="calendar-header">
+        <button type="button" onclick="changeMonth(-1)">❮</button>
 
-      let currentMonth = today.getMonth();
+        <div id="currentMonthYear">September 2026</div>
 
-      let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+        <button type="button" onclick="changeMonth(1)">❯</button>
+      </div>
 
-      let chosenTime = "6:00 PM";
+      <div class="calendar-grid">
+        <div class="day-name">Su</div>
+        <div class="day-name">Mo</div>
+        <div class="day-name">Tu</div>
+        <div class="day-name">We</div>
+        <div class="day-name">Th</div>
+        <div class="day-name">Fr</div>
+        <div class="day-name">Sa</div>
+      </div>
 
-      let chosenTimeValue = "18:00";
+      <div class="calendar-grid" id="calendarDaysContainer"></div>
 
-      let chosenVibes = [];
+      <div class="time-picker-section">
+        <div class="time-picker-label">What time? ⏰</div>
 
-      let otherVibe = "";
+        <div class="time-picker-card">
+          <div class="time-picker-icon">🕐</div>
 
-      let chosenDress = "";
+          <div class="time-picker-content">
+            <div class="time-picker-title">Chọn giờ hẹn của chúng ta</div>
 
-      let chosenTrend = "";
+            <input
+              type="time"
+              id="timePicker"
+              value="18:00"
+              onchange="selectTime(this.value)"
+            />
+          </div>
+        </div>
 
-      document.getElementById("inputDate").value = chosenDate;
+        <div class="selected-time-preview" id="selectedTimePreview">
+          6:00 PM 💖
+        </div>
+      </div>
 
-      /* =========================
-       STEP NAVIGATION
-    ========================= */
+      <button type="button" class="btn" id="btnStep2" onclick="nextStep(3)">
+        Set the date 💖
+      </button>
+    </div>
 
-      function nextStep(stepNumber) {
-        document
-          .querySelectorAll(".step")
-          .forEach((el) => el.classList.remove("active"));
+    <!-- =========================
+       STEP 3
+  ========================= -->
 
-        document.getElementById("step" + stepNumber).classList.add("active");
+    <div class="step" id="step3">
+      <div style="font-size: 13px; color: #666; margin-bottom: 3px">
+        Yay! Our date has been successfully scheduled! ❤️
+      </div>
 
-        updateBackButton(stepNumber);
+      <h2>What are we feeling? (Chọn nhiều nha) ✨</h2>
 
-        if (stepNumber === 2) {
-          renderCalendar(currentMonth, currentYear);
+      <div class="vibe-grid">
+        <div class="vibe-card" onclick="toggleVibe(this, 'Matcha Latte 🍵')">
+          <div class="vibe-icon">🍵</div>
+          <div class="vibe-name">Matcha Latte</div>
+        </div>
+
+        <div
+          class="vibe-card"
+          onclick="toggleVibe(this, 'Coffee / Milk Tea ☕')"
+        >
+          <div class="vibe-icon">☕ / 🥤</div>
+          <div class="vibe-name">Coffee / Milk Tea</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Mall 🛍️')">
+          <div class="vibe-icon">🛍️</div>
+          <div class="vibe-name">Mall</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Jollibee 🍗')">
+          <div class="vibe-icon">🍗</div>
+          <div class="vibe-name">Jollibee</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Hotpot 🍲')">
+          <div class="vibe-icon">🍲</div>
+          <div class="vibe-name">Hotpot</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Steak 🥩')">
+          <div class="vibe-icon">🥩</div>
+          <div class="vibe-name">Steak</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Thai Noodle 🍜')">
+          <div class="vibe-icon">🍜</div>
+          <div class="vibe-name">Thai Noodle</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Korea Food 🇰🇷')">
+          <div class="vibe-icon">🇰🇷</div>
+          <div class="vibe-name">Korea Food</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Pizza 🍕')">
+          <div class="vibe-icon">🍕</div>
+          <div class="vibe-name">Pizza</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Sushi 🍣')">
+          <div class="vibe-icon">🍣</div>
+          <div class="vibe-name">Sushi</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Burgers 🍔')">
+          <div class="vibe-icon">🍔</div>
+          <div class="vibe-name">Burgers</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Pasta 🍝')">
+          <div class="vibe-icon">🍝</div>
+          <div class="vibe-name">Pasta</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Tacos 🌮')">
+          <div class="vibe-icon">🌮</div>
+          <div class="vibe-name">Tacos</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Cinema 🎬')">
+          <div class="vibe-icon">🎬</div>
+          <div class="vibe-name">Cinema</div>
+        </div>
+
+        <div class="vibe-card" onclick="toggleVibe(this, 'Other 📝')">
+          <div class="vibe-icon">📝</div>
+          <div class="vibe-name">Other</div>
+        </div>
+      </div>
+
+      <div class="other-vibe-input" id="otherVibeInput">
+        <input
+          type="text"
+          id="otherVibeText"
+          placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
+          oninput="updateOtherVibe()"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn"
+        id="btnStep3"
+        disabled
+        onclick="nextStep(32)"
+      >
+        Next 💌
+      </button>
+    </div>
+
+    <!-- =========================
+       STEP 3.2
+  ========================= -->
+
+    <div class="step" id="step32">
+      <h2>Dress Code 👗✨</h2>
+
+      <p style="font-size: 13px; margin-bottom: 12px">
+        Hôm đó công chúa mặc gì thế nhỉ?
+      </p>
+
+      <div class="dress-grid">
+        <div
+          class="dress-card"
+          id="dress1"
+          onclick="selectDress(this, 'White & Pastel 🤍')"
+        >
+          <div class="dress-name">White & Pastel 🤍</div>
+        </div>
+
+        <div
+          class="dress-card"
+          id="dress2"
+          onclick="selectDress(this, 'All Black Chic 🖤')"
+        >
+          <div class="dress-name">All Black Chic 🖤</div>
+        </div>
+
+        <div
+          class="dress-card"
+          id="dress3"
+          onclick="selectDress(this, 'Sweet & Elegant 🌸')"
+        >
+          <div class="dress-name">Sweet & Elegant 🌸</div>
+        </div>
+
+        <div
+          class="dress-card"
+          id="dress4"
+          onclick="selectDress(this, 'Casual & Comfy 🧢')"
+        >
+          <div class="dress-name">Casual & Comfy 🧢</div>
+        </div>
+      </div>
+
+      <div
+        class="upload-section"
+        onclick="document.getElementById('dressImageInput').click()"
+      >
+        <div style="font-size: 18px; margin-bottom: 2px">📸</div>
+
+        <div
+          style="font-size: 12px; font-weight: 600; color: #d81b60"
+          id="dressUploadText"
+        >
+          Hoặc tải ảnh outfit của em lên đây
+        </div>
+
+        <input
+          type="file"
+          id="dressImageInput"
+          accept="image/*"
+          style="display: none"
+          onchange="handleDressUpload(event)"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn"
+        id="btnStep32"
+        disabled
+        onclick="nextStep(35)"
+      >
+        Next 💌
+      </button>
+    </div>
+
+    <!-- =========================
+       STEP 3.5
+  ========================= -->
+
+    <div class="step" id="step35">
+      <h2>Pick a Trend! 🌟</h2>
+
+      <p style="font-size: 13px; margin-bottom: 12px">
+        Chọn một trong hai trend dưới đây em muốn làm cùng anh ✨
+      </p>
+
+      <div class="trend-grid">
+        <div
+          class="trend-card"
+          id="trend1Card"
+          onclick="selectTrend('McDonald Cat 🐱')"
+        >
+          <img
+            src="https://i.ibb.co/zWWSX1KX/images.jpg"
+            alt="Cat McDonald"
+            class="trend-img"
+          />
+
+          <div class="trend-label">Cat McDonald 🍟</div>
+        </div>
+
+        <div
+          class="trend-card"
+          id="trend2Card"
+          onclick="selectTrend('Heart Nail 💅')"
+        >
+          <img
+            src="https://i.ibb.co/214dJS4v/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg"
+            alt="Heart Nail"
+            class="trend-img"
+          />
+
+          <div class="trend-label">Heart Nail 💅</div>
+        </div>
+
+        <div
+          class="trend-card"
+          id="trend3Card"
+          onclick="selectTrend('Flower Bouquet 💐')"
+        >
+          <img
+            src="https://i.ibb.co/kVZM5RJM/image.png"
+            alt="Flower Bouquet"
+            class="trend-img"
+          />
+
+          <div class="trend-label">Flower Bouquet 💐</div>
+        </div>
+
+        <div
+          class="trend-card"
+          id="trend4Card"
+          onclick="selectTrend('Zootopia 🦊')"
+        >
+          <img
+            src="https://i.ibb.co/B5DMrMs0/image-2.png"
+            alt="Zootopia"
+            class="trend-img"
+          />
+
+          <div class="trend-label">Zootopia 🦊</div>
+        </div>
+      </div>
+
+      <div
+        class="upload-section"
+        onclick="document.getElementById('customImageInput').click()"
+      >
+        <div style="font-size: 18px; margin-bottom: 2px">📤</div>
+
+        <div
+          style="font-size: 12px; font-weight: 600; color: #d81b60"
+          id="uploadText"
+        >
+          Hoặc cho anh biết em thích trend nào khác nhé công chúa, em có thể
+          upload nhiều hình!
+        </div>
+
+        <input
+          type="file"
+          id="customImageInput"
+          accept="image/*"
+          multiple
+          style="display: none"
+          onchange="handleMultipleImagesUpload(event)"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn"
+        id="btnStep35"
+        disabled
+        onclick="nextStep(4)"
+      >
+        Next 💌
+      </button>
+    </div>
+
+    <!-- =========================
+       STEP 4
+  ========================= -->
+
+    <div class="step" id="step4">
+      <h2>YAY!! 💖</h2>
+
+      <div
+        style="
+          background: #fff0f5;
+          padding: 10px 12px;
+          border-radius: 12px;
+          margin: 10px 0;
+          text-align: left;
+          font-size: 12px;
+          color: #444;
+          border: 1px dashed #e91e63;
+        "
+      >
+        <p style="margin-bottom: 4px">
+          🗓️ <b>Ngày:</b>
+          <span id="sumDate"> September 6 </span>
+        </p>
+
+        <p style="margin-bottom: 4px">
+          ⏰ <b>Giờ:</b>
+          <span id="sumTime"> 6:00 PM </span>
+        </p>
+
+        <p style="margin-bottom: 4px">
+          ✨ <b>Hoạt động & Ẩm thực:</b>
+          <span id="sumVibe"> Chưa chọn </span>
+        </p>
+
+        <p style="margin-bottom: 4px">
+          👗 <b>Dress Code:</b>
+          <span id="sumDress"> Chưa chọn </span>
+        </p>
+
+        <p style="margin-bottom: 0">
+          📸 <b>Trend:</b>
+          <span id="sumTrend"> Chưa chọn </span>
+        </p>
+      </div>
+
+      <p style="font-weight: 600; color: #d81b60; margin-top: 5px">
+        I can't wait to see you! 🥀✨
+      </p>
+
+      <p style="font-weight: 600; color: #d81b60">
+        Thanks for spending time with me 🥰❤️
+      </p>
+
+      <button
+        type="submit"
+        class="btn"
+        style="background-color: #2e7d32"
+        id="submitBtn"
+      >
+        Gửi lịch hẹn cho anh nhé! 💌
+      </button>
+    </div>
+
+    <!-- =========================
+       STEP 5
+  ========================= -->
+
+    <div class="step" id="step5">
+      <div style="font-size: 50px; margin-bottom: 10px">❤️‍🔥</div>
+
+      <h2>Our Date Countdown</h2>
+
+      <p>Buổi hẹn hò của chúng ta sẽ diễn ra sau:</p>
+
+      <div class="countdown-box" id="countdownTimer">
+        Đang tính thời gian...
+      </div>
+
+      <p style="font-size: 13px; color: #888; margin-top: 20px">
+        Lịch hẹn đã được gửi thành công cho anh rồi nhé công chúa! 🥰
+      </p>
+    </div>
+  </form>
+</div>
+
+<script>
+  /* =========================
+   GLOBAL STATE
+========================= */
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  let today = new Date();
+
+  let currentYear = today.getFullYear();
+
+  let currentMonth = today.getMonth();
+
+  let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+
+  let chosenTime = "6:00 PM";
+
+  let chosenTimeValue = "18:00";
+
+  let chosenVibes = [];
+
+  let otherVibe = "";
+
+  let chosenDress = "";
+
+  let chosenTrend = "";
+
+  document.getElementById("inputDate").value = chosenDate;
+
+  /* =========================
+   STEP NAVIGATION
+========================= */
+
+  function nextStep(stepNumber) {
+    document
+      .querySelectorAll(".step")
+      .forEach((el) => el.classList.remove("active"));
+
+    document.getElementById("step" + stepNumber).classList.add("active");
+
+    updateBackButton(stepNumber);
+
+    if (stepNumber === 2) {
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    if (stepNumber === 3) {
+      restoreVibeSelections();
+    }
+
+    if (stepNumber === 32) {
+      restoreDressSelection();
+    }
+
+    if (stepNumber === 35) {
+      restoreTrendSelection();
+    }
+
+    if (stepNumber === 4) {
+      document.getElementById("sumDate").innerText = chosenDate;
+
+      document.getElementById("sumTime").innerText = chosenTime;
+
+      let vibeText = getVibeText();
+
+      document.getElementById("sumVibe").innerText =
+        vibeText || "Chưa chọn";
+
+      document.getElementById("inputVibe").value = vibeText;
+
+      document.getElementById("sumDress").innerText =
+        chosenDress || "Chưa chọn";
+
+      document.getElementById("inputDress").value = chosenDress;
+
+      document.getElementById("sumTrend").innerText =
+        chosenTrend || "Chưa chọn";
+
+      document.getElementById("inputTrend").value = chosenTrend;
+    }
+  }
+
+  /* =========================
+   BACK BUTTON
+========================= */
+
+  function updateBackButton(stepNumber) {
+    const backButton = document.getElementById("topBackBtn");
+
+    if (
+      stepNumber === 2 ||
+      stepNumber === 3 ||
+      stepNumber === 32 ||
+      stepNumber === 35 ||
+      stepNumber === 4
+    ) {
+      backButton.style.display = "flex";
+    } else {
+      backButton.style.display = "none";
+    }
+  }
+
+  function goBack() {
+    const activeStep = document.querySelector(".step.active");
+
+    if (!activeStep) return;
+
+    switch (activeStep.id) {
+      case "step2":
+        nextStep(1);
+        break;
+
+      case "step3":
+        nextStep(2);
+        break;
+
+      case "step32":
+        nextStep(3);
+        break;
+
+      case "step35":
+        nextStep(32);
+        break;
+
+      case "step4":
+        nextStep(35);
+        break;
+    }
+  }
+
+  /* =========================
+   NO BUTTON
+========================= */
+
+  function moveNoButton() {
+    const noBtn = document.getElementById("noBtn");
+
+    const yesBtn = document.getElementById("yesBtn");
+
+    const container = document.querySelector(".btn-group");
+
+    if (!container.classList.contains("expanded")) {
+      container.classList.add("expanded");
+    }
+
+    yesBtn.innerText = "Yes 😭";
+
+    noBtn.innerText = "No 🥺";
+
+    const containerWidth = container.clientWidth;
+
+    const containerHeight = container.clientHeight;
+
+    const noWidth = noBtn.offsetWidth;
+
+    const noHeight = noBtn.offsetHeight;
+
+    const yesLeft = yesBtn.offsetLeft;
+
+    const yesTop = yesBtn.offsetTop;
+
+    const yesRight = yesLeft + yesBtn.offsetWidth;
+
+    const yesBottom = yesTop + yesBtn.offsetHeight;
+
+    const gap = 10;
+
+    let randomX = 0;
+
+    let randomY = 0;
+
+    let validPosition = false;
+
+    for (let attempts = 0; attempts < 200; attempts++) {
+      randomX = Math.random() * (containerWidth - noWidth);
+
+      randomY = Math.random() * (containerHeight - noHeight);
+
+      const noLeft = randomX;
+
+      const noTop = randomY;
+
+      const noRight = noLeft + noWidth;
+
+      const noBottom = noTop + noHeight;
+
+      const overlapsYes =
+        noLeft < yesRight + gap &&
+        noRight > yesLeft - gap &&
+        noTop < yesBottom + gap &&
+        noBottom > yesTop - gap;
+
+      if (!overlapsYes) {
+        validPosition = true;
+        break;
+      }
+    }
+
+    if (!validPosition) {
+      randomX = containerWidth - noWidth;
+      randomY = containerHeight - noHeight;
+    }
+
+    noBtn.style.left = `${randomX}px`;
+
+    noBtn.style.top = `${randomY}px`;
+
+    noBtn.style.right = "auto";
+
+    noBtn.style.transform = "none";
+
+    noBtn.style.transition = "all 0.12s ease-out";
+  }
+
+  /* =========================
+   CALENDAR
+========================= */
+
+  function renderCalendar(month, year) {
+    const container = document.getElementById("calendarDaysContainer");
+
+    container.innerHTML = "";
+
+    document.getElementById("currentMonthYear").innerText =
+      `${monthNames[month]} ${year}`;
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDayIndex; i++) {
+      const emptyDiv = document.createElement("div");
+
+      emptyDiv.classList.add("day", "empty");
+
+      container.appendChild(emptyDiv);
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+      const dayDiv = document.createElement("div");
+
+      dayDiv.classList.add("day");
+
+      dayDiv.innerText = day;
+
+      const thisDate = new Date(year, month, day);
+
+      const compareToday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+      );
+
+      if (thisDate < compareToday) {
+        dayDiv.classList.add("disabled");
+      } else {
+        dayDiv.onclick = function () {
+          selectDate(this, month, day, year);
+        };
+
+        const formattedStr = `${monthNames[month]} ${day}, ${year}`;
+
+        if (chosenDate === formattedStr) {
+          dayDiv.classList.add("selected");
         }
+      }
 
-        if (stepNumber === 3) {
-          restoreVibeSelections();
-        }
+      container.appendChild(dayDiv);
+    }
+  }
 
-        if (stepNumber === 32) {
-          restoreDressSelection();
-        }
+  function changeMonth(direction) {
+    currentMonth += direction;
 
-        if (stepNumber === 35) {
-          restoreTrendSelection();
-        }
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    } else if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
 
-        if (stepNumber === 4) {
-          document.getElementById("sumDate").innerText = chosenDate;
+    renderCalendar(currentMonth, currentYear);
+  }
 
-          document.getElementById("sumTime").innerText = chosenTime;
+  function selectDate(element, month, day, year) {
+    document
+      .querySelectorAll(".calendar-grid .day")
+      .forEach((el) => el.classList.remove("selected"));
 
-          let vibeText = getVibeText();
+    element.classList.add("selected");
 
-          document.getElementById("sumVibe").innerText =
-            vibeText || "Chưa chọn";
+    chosenDate = `${monthNames[month]} ${day}, ${year}`;
 
-          document.getElementById("inputVibe").value = vibeText;
+    document.getElementById("inputDate").value = chosenDate;
+  }
 
-          document.getElementById("sumDress").innerText =
-            chosenDress || "Chưa chọn";
+  /* =========================
+   TIME PICKER
+========================= */
+
+  function selectTime(timeValue) {
+    if (!timeValue) return;
+
+    chosenTimeValue = timeValue;
+
+    const [hours, minutes] = timeValue.split(":");
+
+    let hour = parseInt(hours, 10);
+
+    const minute = minutes;
+
+    const period = hour >= 12 ? "PM" : "AM";
+
+    hour = hour % 12 || 12;
+
+    chosenTime = `${hour}:${minute} ${period}`;
+
+    document.getElementById("inputTime").value = chosenTime;
+
+    document.getElementById("selectedTimePreview").innerText =
+      `${chosenTime} 💖`;
+  }
+
+  /* =========================
+   VIBE
+========================= */
+
+  function toggleVibe(element, vibeStr) {
+    element.classList.toggle("selected");
+
+    if (element.classList.contains("selected")) {
+      if (!chosenVibes.includes(vibeStr)) {
+        chosenVibes.push(vibeStr);
+      }
+    } else {
+      chosenVibes = chosenVibes.filter((item) => item !== vibeStr);
+    }
+
+    if (vibeStr === "Other 📝") {
+      const otherInput = document.getElementById("otherVibeInput");
+
+      if (element.classList.contains("selected")) {
+        otherInput.classList.add("active");
+
+        document.getElementById("otherVibeText").focus();
+      } else {
+        otherInput.classList.remove("active");
+
+        otherVibe = "";
+
+        document.getElementById("otherVibeText").value = "";
+      }
+    }
+
+    updateVibeValue();
+  }
+
+  function updateOtherVibe() {
+    otherVibe = document.getElementById("otherVibeText").value;
+
+    updateVibeValue();
+  }
+
+  function getVibeText() {
+    let vibes = [...chosenVibes];
+
+    if (chosenVibes.includes("Other 📝") && otherVibe.trim()) {
+      const index = vibes.indexOf("Other 📝");
+
+      vibes[index] = `Other: ${otherVibe.trim()}`;
+    }
+
+    return vibes.join(", ");
+  }
+
+  function updateVibeValue() {
+    const vibeText = getVibeText();
+
+    document.getElementById("inputVibe").value = vibeText;
+
+    document.getElementById("btnStep3").disabled =
+      chosenVibes.length === 0 ||
+      (chosenVibes.includes("Other 📝") && !otherVibe.trim());
+  }
+
+  function restoreVibeSelections() {
+    document.querySelectorAll(".vibe-card").forEach((card) => {
+      const onclickValue = card.getAttribute("onclick");
+
+      const match = onclickValue.match(/toggleVibe\(this,\s*'(.+?)'\)/);
+
+      if (!match) return;
+
+      const vibe = match[1];
+
+      if (chosenVibes.includes(vibe)) {
+        card.classList.add("selected");
+      } else {
+        card.classList.remove("selected");
+      }
+    });
+
+    const otherSelected = chosenVibes.includes("Other 📝");
+
+    const otherInput = document.getElementById("otherVibeInput");
+
+    const otherText = document.getElementById("otherVibeText");
+
+    if (otherSelected) {
+      otherInput.classList.add("active");
+      otherText.value = otherVibe;
+    } else {
+      otherInput.classList.remove("active");
+      otherText.value = "";
+    }
+
+    updateVibeValue();
+  }
+
+  /* =========================
+   DRESS CODE
+========================= */
+
+  function selectDress(element, dressName) {
+    /*
+     * Click selected card again = unselect
+     */
+
+    if (chosenDress === dressName) {
+      element.classList.remove("selected");
+
+      chosenDress = "";
+
+      document.getElementById("inputDress").value = "";
+
+      document.getElementById("btnStep32").disabled = true;
+
+      return;
+    }
+
+    /*
+     * Select new dress
+     */
+
+    document
+      .querySelectorAll(".dress-card")
+      .forEach((el) => el.classList.remove("selected"));
+
+    element.classList.add("selected");
+
+    chosenDress = dressName;
+
+    document.getElementById("inputDress").value = chosenDress;
+
+    document.getElementById("btnStep32").disabled = false;
+  }
+
+  function restoreDressSelection() {
+    document
+      .querySelectorAll(".dress-card")
+      .forEach((card) => card.classList.remove("selected"));
+
+    document.getElementById("btnStep32").disabled = !chosenDress;
+
+    if (!chosenDress) return;
+
+    document.querySelectorAll(".dress-card").forEach((card) => {
+      const onclickValue = card.getAttribute("onclick");
+
+      if (onclickValue && onclickValue.includes(chosenDress)) {
+        card.classList.add("selected");
+      }
+    });
+  }
+
+  /* =========================
+   DRESS IMAGE UPLOAD
+========================= */
+
+  function handleDressUpload(event) {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const uploadText = document.getElementById("dressUploadText");
+
+    const nextBtn32 = document.getElementById("btnStep32");
+
+    uploadText.innerText = "Đang tải ảnh lên... ⏳";
+
+    nextBtn32.disabled = true;
+
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    fetch(
+      "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
+      {
+        method: "POST",
+        body: formData,
+      },
+    )
+      .then((response) => response.json())
+
+      .then((data) => {
+        if (data.success) {
+          const imageUrl = data.data.url;
+
+          chosenDress = `Custom Outfit Link: ${imageUrl}`;
 
           document.getElementById("inputDress").value = chosenDress;
 
-          document.getElementById("sumTrend").innerText =
-            chosenTrend || "Chưa chọn";
+          uploadText.innerText = `Đã tải ảnh lên thành công! ✅`;
 
-          document.getElementById("inputTrend").value = chosenTrend;
-        }
-      }
+          document
+            .querySelectorAll(".dress-card")
+            .forEach((el) => el.classList.remove("selected"));
 
-      /* =========================
-       BACK BUTTON
-    ========================= */
-
-      function updateBackButton(stepNumber) {
-        const backButton = document.getElementById("topBackBtn");
-
-        if (
-          stepNumber === 2 ||
-          stepNumber === 3 ||
-          stepNumber === 32 ||
-          stepNumber === 35 ||
-          stepNumber === 4
-        ) {
-          backButton.style.display = "flex";
+          nextBtn32.disabled = false;
         } else {
-          backButton.style.display = "none";
+          alert("Lỗi upload ảnh, em thử chọn ảnh khác nhé!");
+
+          uploadText.innerText =
+            "Hoặc tải ảnh outfit của em lên đây";
+
+          nextBtn32.disabled = true;
         }
-      }
+      })
 
-      function goBack() {
-        const activeStep = document.querySelector(".step.active");
+      .catch((error) => {
+        console.error("Error:", error);
 
-        if (!activeStep) return;
+        alert("Có lỗi xảy ra khi kết nối tới server ảnh!");
 
-        switch (activeStep.id) {
-          case "step2":
-            nextStep(1);
-            break;
-
-          case "step3":
-            nextStep(2);
-            break;
-
-          case "step32":
-            nextStep(3);
-            break;
-
-          case "step35":
-            nextStep(32);
-            break;
-
-          case "step4":
-            nextStep(35);
-            break;
-        }
-      }
-
-      /* =========================
-       NO BUTTON
-    ========================= */
-
-      function moveNoButton() {
-        const noBtn = document.getElementById("noBtn");
-
-        const yesBtn = document.getElementById("yesBtn");
-
-        const container = document.querySelector(".btn-group");
-
-        /* =========================
-         EXPAND PLAY AREA
-      ========================= */
-
-        if (!container.classList.contains("expanded")) {
-          container.classList.add("expanded");
-        }
-
-        /* =========================
-         EMOTIONS
-      ========================= */
-
-        yesBtn.innerText = "Yes 😭";
-
-        noBtn.innerText = "No 🥺";
-
-        const containerWidth = container.clientWidth;
-
-        const containerHeight = container.clientHeight;
-
-        const noWidth = noBtn.offsetWidth;
-
-        const noHeight = noBtn.offsetHeight;
-
-        const yesLeft = yesBtn.offsetLeft;
-
-        const yesTop = yesBtn.offsetTop;
-
-        const yesRight = yesLeft + yesBtn.offsetWidth;
-
-        const yesBottom = yesTop + yesBtn.offsetHeight;
-
-        const gap = 10;
-
-        let randomX = 0;
-
-        let randomY = 0;
-
-        let validPosition = false;
-
-        for (let attempts = 0; attempts < 200; attempts++) {
-          randomX = Math.random() * (containerWidth - noWidth);
-
-          randomY = Math.random() * (containerHeight - noHeight);
-
-          const noLeft = randomX;
-
-          const noTop = randomY;
-
-          const noRight = noLeft + noWidth;
-
-          const noBottom = noTop + noHeight;
-
-          const overlapsYes =
-            noLeft < yesRight + gap &&
-            noRight > yesLeft - gap &&
-            noTop < yesBottom + gap &&
-            noBottom > yesTop - gap;
-
-          if (!overlapsYes) {
-            validPosition = true;
-
-            break;
-          }
-        }
-
-        /* =========================
-         FALLBACK
-      ========================= */
-
-        if (!validPosition) {
-          randomX = containerWidth - noWidth;
-
-          randomY = containerHeight - noHeight;
-        }
-
-        noBtn.style.left = `${randomX}px`;
-
-        noBtn.style.top = `${randomY}px`;
-
-        noBtn.style.right = "auto";
-
-        noBtn.style.transform = "none";
-
-        noBtn.style.transition = "all 0.12s ease-out";
-      }
-
-      /* =========================
-       CALENDAR
-    ========================= */
-
-      function renderCalendar(month, year) {
-        const container = document.getElementById("calendarDaysContainer");
-
-        container.innerHTML = "";
-
-        document.getElementById("currentMonthYear").innerText =
-          `${monthNames[month]} ${year}`;
-
-        const firstDayIndex = new Date(year, month, 1).getDay();
-
-        const totalDays = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < firstDayIndex; i++) {
-          const emptyDiv = document.createElement("div");
-
-          emptyDiv.classList.add("day", "empty");
-
-          container.appendChild(emptyDiv);
-        }
-
-        for (let day = 1; day <= totalDays; day++) {
-          const dayDiv = document.createElement("div");
-
-          dayDiv.classList.add("day");
-
-          dayDiv.innerText = day;
-
-          const thisDate = new Date(year, month, day);
-
-          const compareToday = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-          );
-
-          if (thisDate < compareToday) {
-            dayDiv.classList.add("disabled");
-          } else {
-            dayDiv.onclick = function () {
-              selectDate(this, month, day, year);
-            };
-
-            const formattedStr = `${monthNames[month]} ${day}, ${year}`;
-
-            if (chosenDate === formattedStr) {
-              dayDiv.classList.add("selected");
-            }
-          }
-
-          container.appendChild(dayDiv);
-        }
-      }
-
-      function changeMonth(direction) {
-        currentMonth += direction;
-
-        if (currentMonth > 11) {
-          currentMonth = 0;
-          currentYear++;
-        } else if (currentMonth < 0) {
-          currentMonth = 11;
-          currentYear--;
-        }
-
-        renderCalendar(currentMonth, currentYear);
-      }
-
-      function selectDate(element, month, day, year) {
-        document
-          .querySelectorAll(".calendar-grid .day")
-          .forEach((el) => el.classList.remove("selected"));
-
-        element.classList.add("selected");
-
-        chosenDate = `${monthNames[month]} ${day}, ${year}`;
-
-        document.getElementById("inputDate").value = chosenDate;
-      }
-
-      /* =========================
-       TIME PICKER
-    ========================= */
-
-      function selectTime(timeValue) {
-        if (!timeValue) return;
-
-        chosenTimeValue = timeValue;
-
-        const [hours, minutes] = timeValue.split(":");
-
-        let hour = parseInt(hours, 10);
-
-        const minute = minutes;
-
-        const period = hour >= 12 ? "PM" : "AM";
-
-        hour = hour % 12 || 12;
-
-        chosenTime = `${hour}:${minute} ${period}`;
-
-        document.getElementById("inputTime").value = chosenTime;
-
-        document.getElementById("selectedTimePreview").innerText =
-          `${chosenTime} 💖`;
-      }
-
-      /* =========================
-       VIBE
-    ========================= */
-
-      function toggleVibe(element, vibeStr) {
-        element.classList.toggle("selected");
-
-        if (element.classList.contains("selected")) {
-          if (!chosenVibes.includes(vibeStr)) {
-            chosenVibes.push(vibeStr);
-          }
-        } else {
-          chosenVibes = chosenVibes.filter((item) => item !== vibeStr);
-        }
-
-        if (vibeStr === "Other 📝") {
-          const otherInput = document.getElementById("otherVibeInput");
-
-          if (element.classList.contains("selected")) {
-            otherInput.classList.add("active");
-
-            document.getElementById("otherVibeText").focus();
-          } else {
-            otherInput.classList.remove("active");
-
-            otherVibe = "";
-
-            document.getElementById("otherVibeText").value = "";
-          }
-        }
-
-        updateVibeValue();
-      }
-
-      function updateOtherVibe() {
-        otherVibe = document.getElementById("otherVibeText").value;
-
-        updateVibeValue();
-      }
-
-      function getVibeText() {
-        let vibes = [...chosenVibes];
-
-        if (chosenVibes.includes("Other 📝") && otherVibe.trim()) {
-          const index = vibes.indexOf("Other 📝");
-
-          vibes[index] = `Other: ${otherVibe.trim()}`;
-        }
-
-        return vibes.join(", ");
-      }
-
-      function updateVibeValue() {
-        const vibeText = getVibeText();
-
-        document.getElementById("inputVibe").value = vibeText;
-
-        document.getElementById("btnStep3").disabled =
-          chosenVibes.length === 0 ||
-          (chosenVibes.includes("Other 📝") && !otherVibe.trim());
-      }
-
-      function restoreVibeSelections() {
-        document.querySelectorAll(".vibe-card").forEach((card) => {
-          const onclickValue = card.getAttribute("onclick");
-
-          const match = onclickValue.match(/toggleVibe\(this,\s*'(.+?)'\)/);
-
-          if (!match) return;
-
-          const vibe = match[1];
-
-          if (chosenVibes.includes(vibe)) {
-            card.classList.add("selected");
-          } else {
-            card.classList.remove("selected");
-          }
-        });
-
-        const otherSelected = chosenVibes.includes("Other 📝");
-
-        const otherInput = document.getElementById("otherVibeInput");
-
-        const otherText = document.getElementById("otherVibeText");
-
-        if (otherSelected) {
-          otherInput.classList.add("active");
-
-          otherText.value = otherVibe;
-        } else {
-          otherInput.classList.remove("active");
-
-          otherText.value = "";
-        }
-
-        updateVibeValue();
-      }
-
-      /* =========================
-       DRESS CODE
-    ========================= */
-
-      function selectDress(element, dressName) {
-        document
-          .querySelectorAll(".dress-card")
-          .forEach((el) => el.classList.remove("selected"));
-
-        element.classList.add("selected");
-
-        chosenDress = dressName;
-
-        document.getElementById("inputDress").value = chosenDress;
-
-        document.getElementById("btnStep32").disabled = false;
-      }
-
-      function restoreDressSelection() {
-        document
-          .querySelectorAll(".dress-card")
-          .forEach((card) => card.classList.remove("selected"));
-
-        document.getElementById("btnStep32").disabled = !chosenDress;
-
-        if (!chosenDress) return;
-
-        document.querySelectorAll(".dress-card").forEach((card) => {
-          const onclickValue = card.getAttribute("onclick");
-
-          if (onclickValue && onclickValue.includes(chosenDress)) {
-            card.classList.add("selected");
-          }
-        });
-      }
-
-      /* =========================
-       DRESS IMAGE UPLOAD
-    ========================= */
-
-      function handleDressUpload(event) {
-        const file = event.target.files[0];
-
-        if (!file) return;
-
-        const uploadText = document.getElementById("dressUploadText");
-
-        const nextBtn32 = document.getElementById("btnStep32");
-
-        uploadText.innerText = "Đang tải ảnh lên... ⏳";
+        uploadText.innerText =
+          "Hoặc tải ảnh outfit của em lên đây";
 
         nextBtn32.disabled = true;
+      });
+  }
 
-        const formData = new FormData();
-
-        formData.append("image", file);
-
-        fetch(
-          "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
-          {
-            method: "POST",
-            body: formData,
-          },
-        )
-          .then((response) => response.json())
-
-          .then((data) => {
-            if (data.success) {
-              const imageUrl = data.data.url;
-
-              chosenDress = `Custom Outfit Link: ${imageUrl}`;
-
-              document.getElementById("inputDress").value = chosenDress;
-
-              uploadText.innerText = `Đã tải ảnh lên thành công! ✅`;
-
-              document
-                .querySelectorAll(".dress-card")
-                .forEach((el) => el.classList.remove("selected"));
-
-              nextBtn32.disabled = false;
-            } else {
-              alert("Lỗi upload ảnh, em thử chọn ảnh khác nhé!");
-
-              uploadText.innerText = "Hoặc tải ảnh outfit của em lên đây";
-
-              nextBtn32.disabled = true;
-            }
-          })
-
-          .catch((error) => {
-            console.error("Error:", error);
-
-            alert("Có lỗi xảy ra khi kết nối tới server ảnh!");
-
-            uploadText.innerText = "Hoặc tải ảnh outfit của em lên đây";
-
-            nextBtn32.disabled = true;
-          });
-      }
-
-      /* =========================
+  /* =========================
    TREND
 ========================= */
 
-      function selectTrend(trendName) {
-        document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
+  function selectTrend(trendName) {
+    /*
+     * Click selected card again = unselect
+     */
 
-        let selectedCardId = "";
+    if (chosenTrend === trendName) {
+      document
+        .querySelectorAll(".trend-card")
+        .forEach((el) => el.classList.remove("selected"));
 
-        if (trendName.includes("Cat")) {
-          selectedCardId = "trend1Card";
-        } else if (trendName.includes("Heart Nail")) {
-          selectedCardId = "trend2Card";
-        } else if (trendName.includes("Flower Bouquet")) {
-          selectedCardId = "trend3Card";
-        } else if (trendName.includes("Zootopia")) {
-          selectedCardId = "trend4Card";
-        }
+      chosenTrend = "";
 
-        if (selectedCardId) {
-          document.getElementById(selectedCardId).classList.add("selected");
-        }
+      document.getElementById("inputTrend").value = "";
 
-        chosenTrend = trendName;
+      document.getElementById("btnStep35").disabled = true;
 
-        document.getElementById("inputTrend").value = chosenTrend;
+      return;
+    }
 
-        document.getElementById("btnStep35").disabled = false;
-      }
+    /*
+     * Select new trend
+     */
 
-      function restoreTrendSelection() {
-        document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
+    document
+      .querySelectorAll(".trend-card")
+      .forEach((el) => el.classList.remove("selected"));
 
-        if (chosenTrend.includes("Cat")) {
-          document.getElementById("trend1Card").classList.add("selected");
-        } else if (chosenTrend.includes("Heart Nail")) {
-          document.getElementById("trend2Card").classList.add("selected");
-        } else if (chosenTrend.includes("Flower Bouquet")) {
-          document.getElementById("trend3Card").classList.add("selected");
-        } else if (chosenTrend.includes("Zootopia")) {
-          document.getElementById("trend4Card").classList.add("selected");
-        }
+    let selectedCardId = "";
 
-        document.getElementById("btnStep35").disabled = !chosenTrend;
-      }
+    if (trendName.includes("Cat")) {
+      selectedCardId = "trend1Card";
+    } else if (trendName.includes("Heart Nail")) {
+      selectedCardId = "trend2Card";
+    } else if (trendName.includes("Flower Bouquet")) {
+      selectedCardId = "trend3Card";
+    } else if (trendName.includes("Zootopia")) {
+      selectedCardId = "trend4Card";
+    }
 
-      /* =========================
-       MULTIPLE IMAGE UPLOAD
-    ========================= */
+    if (selectedCardId) {
+      document.getElementById(selectedCardId).classList.add("selected");
+    }
 
-      function handleMultipleImagesUpload(event) {
-        const files = event.target.files;
+    chosenTrend = trendName;
 
-        if (!files || files.length === 0) return;
+    document.getElementById("inputTrend").value = chosenTrend;
 
-        const uploadText = document.getElementById("uploadText");
+    document.getElementById("btnStep35").disabled = false;
+  }
 
-        const nextBtn35 = document.getElementById("btnStep35");
+  function restoreTrendSelection() {
+    document
+      .querySelectorAll(".trend-card")
+      .forEach((el) => el.classList.remove("selected"));
 
-        uploadText.innerText = `Đang tải ${files.length} ảnh lên... ⏳`;
+    if (chosenTrend.includes("Cat")) {
+      document.getElementById("trend1Card").classList.add("selected");
+    } else if (chosenTrend.includes("Heart Nail")) {
+      document.getElementById("trend2Card").classList.add("selected");
+    } else if (chosenTrend.includes("Flower Bouquet")) {
+      document.getElementById("trend3Card").classList.add("selected");
+    } else if (chosenTrend.includes("Zootopia")) {
+      document.getElementById("trend4Card").classList.add("selected");
+    }
 
-        nextBtn35.disabled = true;
+    document.getElementById("btnStep35").disabled = !chosenTrend;
+  }
 
-        let uploadedLinks = [];
+  /* =========================
+   MULTIPLE IMAGE UPLOAD
+========================= */
 
-        let completedCount = 0;
+  function handleMultipleImagesUpload(event) {
+    const files = event.target.files;
 
-        Array.from(files).forEach((file, index) => {
-          const formData = new FormData();
+    if (!files || files.length === 0) return;
 
-          formData.append("image", file);
+    const uploadText = document.getElementById("uploadText");
 
-          fetch(
-            "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
-            {
-              method: "POST",
-              body: formData,
-            },
-          )
-            .then((response) => response.json())
+    const nextBtn35 = document.getElementById("btnStep35");
 
-            .then((data) => {
-              if (data.success) {
-                uploadedLinks.push(data.data.url);
-              }
-            })
+    uploadText.innerText = `Đang tải ${files.length} ảnh lên... ⏳`;
 
-            .catch((error) => {
-              console.error("Lỗi upload ảnh thứ " + (index + 1), error);
-            })
+    nextBtn35.disabled = true;
 
-            .finally(() => {
-              completedCount++;
+    let uploadedLinks = [];
 
-              if (completedCount === files.length) {
-                if (uploadedLinks.length > 0) {
-                  chosenTrend =
-                    `Custom Images (${uploadedLinks.length}): ` +
-                    uploadedLinks.join(", ");
+    let completedCount = 0;
 
-                  document.getElementById("inputTrend").value = chosenTrend;
+    Array.from(files).forEach((file, index) => {
+      const formData = new FormData();
 
-                  uploadText.innerText = `Đã tải lên thành công ${uploadedLinks.length}/${files.length} ảnh! ✅`;
+      formData.append("image", file);
 
-                  document
-                    .querySelectorAll(".trend-card")
-                    .forEach((el) => el.classList.remove("selected"));
-
-                  nextBtn35.disabled = false;
-                } else {
-                  alert("Lỗi upload ảnh, em thử chọn lại nhé!");
-
-                  uploadText.innerText =
-                    "Hoặc tải nhiều ảnh ngẫu nhiên lên đây";
-
-                  nextBtn35.disabled = true;
-                }
-              }
-            });
-        });
-      }
-
-      /* =========================
-       SUBMIT
-    ========================= */
-
-      function submitForm(event) {
-        event.preventDefault();
-
-        const form = document.getElementById("dateForm");
-
-        const submitBtn = document.getElementById("submitBtn");
-
-        submitBtn.innerText = "Đang gửi...";
-
-        submitBtn.disabled = true;
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
+      fetch(
+        "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
+        {
           method: "POST",
           body: formData,
-          headers: {
-            Accept: "application/json",
-          },
-        })
-          .then((response) => {
-            nextStep(5);
+        },
+      )
+        .then((response) => response.json())
 
-            startCountdown();
-          })
-
-          .catch((error) => {
-            alert("Có chút lỗi nhỏ khi gửi, nhưng đừng lo, bấm gửi lại nha!");
-
-            submitBtn.innerText = "Gửi lịch hẹn cho anh nhé! 💌";
-
-            submitBtn.disabled = false;
-          });
-      }
-
-      /* =========================
-       COUNTDOWN
-    ========================= */
-
-      function startCountdown() {
-        const [month, day, year] = chosenDate.replace(",", "").split(" ");
-
-        const [time, period] = chosenTime.split(" ");
-
-        let [hours, minutes] = time.split(":");
-
-        hours = parseInt(hours, 10);
-
-        minutes = parseInt(minutes, 10);
-
-        if (period === "PM" && hours !== 12) {
-          hours += 12;
-        }
-
-        if (period === "AM" && hours === 12) {
-          hours = 0;
-        }
-
-        const targetDate = new Date(
-          parseInt(year, 10),
-          monthNames.indexOf(month),
-          parseInt(day, 10),
-          hours,
-          minutes,
-          0,
-        ).getTime();
-
-        const countdownTimer = document.getElementById("countdownTimer");
-
-        const updateCountdown = () => {
-          const now = new Date().getTime();
-
-          const difference = targetDate - now;
-
-          if (difference <= 0) {
-            countdownTimer.innerHTML = "Đã đến thời gian hẹn hò rồi! 🥰💖";
-
-            return;
+        .then((data) => {
+          if (data.success) {
+            uploadedLinks.push(data.data.url);
           }
+        })
 
-          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-
-          const hoursRemaining = Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        .catch((error) => {
+          console.error(
+            "Lỗi upload ảnh thứ " + (index + 1),
+            error,
           );
+        })
 
-          const minutesRemaining = Math.floor(
-            (difference % (1000 * 60 * 60)) / (1000 * 60),
-          );
+        .finally(() => {
+          completedCount++;
 
-          const secondsRemaining = Math.floor(
-            (difference % (1000 * 60)) / 1000,
-          );
+          if (completedCount === files.length) {
+            if (uploadedLinks.length > 0) {
+              chosenTrend =
+                `Custom Images (${uploadedLinks.length}): ` +
+                uploadedLinks.join(", ");
 
-          countdownTimer.innerHTML = `${days} ngày ${hoursRemaining} giờ ${minutesRemaining} phút ${secondsRemaining} giây`;
-        };
+              document.getElementById("inputTrend").value =
+                chosenTrend;
 
-        updateCountdown();
+              uploadText.innerText =
+                `Đã tải lên thành công ${uploadedLinks.length}/${files.length} ảnh! ✅`;
 
-        setInterval(updateCountdown, 1000);
+              document
+                .querySelectorAll(".trend-card")
+                .forEach((el) => el.classList.remove("selected"));
+
+              nextBtn35.disabled = false;
+            } else {
+              alert("Lỗi upload ảnh, em thử chọn lại nhé!");
+
+              uploadText.innerText =
+                "Hoặc tải nhiều ảnh ngẫu nhiên lên đây";
+
+              nextBtn35.disabled = true;
+            }
+          }
+        });
+    });
+  }
+
+  /* =========================
+   SUBMIT
+========================= */
+
+  function submitForm(event) {
+    event.preventDefault();
+
+    const form = document.getElementById("dateForm");
+
+    const submitBtn = document.getElementById("submitBtn");
+
+    submitBtn.innerText = "Đang gửi...";
+
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        nextStep(5);
+
+        startCountdown();
+      })
+
+      .catch((error) => {
+        alert(
+          "Có chút lỗi nhỏ khi gửi, nhưng đừng lo, bấm gửi lại nha!",
+        );
+
+        submitBtn.innerText = "Gửi lịch hẹn cho anh nhé! 💌";
+
+        submitBtn.disabled = false;
+      });
+  }
+
+  /* =========================
+   COUNTDOWN
+========================= */
+
+  function startCountdown() {
+    const [month, day, year] = chosenDate
+      .replace(",", "")
+      .split(" ");
+
+    const [time, period] = chosenTime.split(" ");
+
+    let [hours, minutes] = time.split(":");
+
+    hours = parseInt(hours, 10);
+
+    minutes = parseInt(minutes, 10);
+
+    if (period === "PM" && hours !== 12) {
+      hours += 12;
+    }
+
+    if (period === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    const targetDate = new Date(
+      parseInt(year, 10),
+      monthNames.indexOf(month),
+      parseInt(day, 10),
+      hours,
+      minutes,
+      0,
+    ).getTime();
+
+    const countdownTimer =
+      document.getElementById("countdownTimer");
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+
+      const difference = targetDate - now;
+
+      if (difference <= 0) {
+        countdownTimer.innerHTML =
+          "Đã đến thời gian hẹn hò rồi! 🥰💖";
+
+        return;
       }
-    </script>
+
+      const days = Math.floor(
+        difference / (1000 * 60 * 60 * 24),
+      );
+
+      const hoursRemaining = Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60),
+      );
+
+      const minutesRemaining = Math.floor(
+        (difference % (1000 * 60 * 60)) / (1000 * 60),
+      );
+
+      const secondsRemaining = Math.floor(
+        (difference % (1000 * 60)) / 1000,
+      );
+
+      countdownTimer.innerHTML = `${days} ngày ${hoursRemaining} giờ ${minutesRemaining} phút ${secondsRemaining} giây`;
+    };
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+  }
+</script>
+```
+
   </body>
 </html>
